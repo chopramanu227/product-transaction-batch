@@ -32,7 +32,7 @@ CREATE TABLE ProductTransaction (
     futureReference VARCHAR(6),
     ticketNumber VARCHAR(6),
     externalNumber VARCHAR(6),
-    transactionPriceDec DECIMAL(8,7),
+    transactionPriceDec DECIMAL(11,7),
     traderInitials VARCHAR(6),
     oppositeTraderId VARCHAR(7),
     openCloseCode VARCHAR(1),

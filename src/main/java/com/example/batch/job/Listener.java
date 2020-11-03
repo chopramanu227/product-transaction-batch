@@ -41,7 +41,7 @@ public class Listener extends JobExecutionListenerSupport {
             prodTxnSummaryEntities.forEach(printProdTxnSummary(csvPrinter));
         }catch (IOException e){
             log.error("Exception occured while creating CSV file" + e);
-            //throw new RuntimeException("Exception occured while creating CSV file");
+            //can throw exception based on business requirements
         }
     }
 
@@ -56,7 +56,7 @@ public class Listener extends JobExecutionListenerSupport {
                         clientInformation,productInformation,totalTransactionAmount);
             } catch (Exception e) {
                 log.error("Exception occured while writing records to CSV file" + e);
-                //throw new RuntimeException("Exception occured while writing records to CSV file");
+                //can throw exception based on business requirements
             }
         };
     }

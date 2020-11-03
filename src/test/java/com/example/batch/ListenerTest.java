@@ -1,30 +1,33 @@
 package com.example.batch;
 
 import com.example.batch.config.BatchConfiguration;
+import com.example.batch.domain.ProductTransactionSummaryEntityMock;
 import com.example.batch.job.Listener;
 import com.example.batch.job.Processor;
-import org.junit.After;
+import com.example.batch.persistence.entity.ProductTransactionSummaryEntity;
+import com.example.batch.persistence.repository.ProductTransactionRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.ExitStatus;
+import org.mockito.Mockito;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.JobRepositoryTestUtils;
+import org.springframework.batch.test.AssertFile;
+import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestExecutionListener;
 import org.springframework.batch.test.context.SpringBatchTest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @RunWith(SpringRunner.class)
 @SpringBatchTest
@@ -35,71 +38,13 @@ import static org.junit.Assert.assertThat;
         "input.file=src/test/resources/Input.txt",
         "output.file=src/test/generated/Output.csv"
 })
-public class BatchIntegrationTest {
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
-
-    @Autowired
-    private JobRepositoryTestUtils jobRepositoryTestUtils;
-
-    /*@Autowired
-    private FlatFileItemReader<ProductTransaction> itemReader;*/
+public class ListenerTest {
 
     @MockBean
     private Listener listener;
 
     @MockBean
     private Processor processor;
-
-    @After
-    public void cleanUp() {
-        jobRepositoryTestUtils.removeJobExecutions();
-    }
-
-    @Test
-    public void givenBatchConfig_whenJobExecuted_thenSuccess() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        JobInstance actualJobInstance = jobExecution.getJobInstance();
-        ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
-        assertThat(actualJobInstance.getJobName(), is("transactionProcessingJob"));
-        assertThat(actualJobExitStatus.getExitCode(), is("COMPLETED"));
-    }
-
-    /*@Test
-    public void givenMockedStep_whenReaderCalled_thenSuccess() throws Exception {
-        StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution();
-        StepScopeTestUtils.doInStepScope(stepExecution, () -> {
-            ProductTransaction productTransaction;
-            int count=0;
-            itemReader.open(stepExecution.getExecutionContext());
-            while ((productTransaction = itemReader.read()) != null) {
-                count++;
-                assertThat(productTransaction.getRecordCode(), is("315"));
-            }
-            assertEquals(count,717);
-            itemReader.close();
-            return null;
-        });
-    }
-
-    @Test(expected = ItemStreamException.class)
-    public void givenMockedStep_whenReaderCalledWithoutFileResource_thenFail() throws Exception {
-        StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution();
-        itemReader.setResource(new FileSystemResource("inputFile")); // file is not present
-        StepScopeTestUtils.doInStepScope(stepExecution, () -> {
-            ProductTransaction productTransaction;
-            int count=0;
-            itemReader.open(stepExecution.getExecutionContext());
-            while ((productTransaction = itemReader.read()) != null) {
-                count++;
-                assertThat(productTransaction.getRecordCode(), is("315"));
-            }
-            assertEquals(count,717);
-            itemReader.close();
-            return null;
-        });
-    }
 
     @Test
     public void givenMockedJob_whenJobExecutionIsComplete_thenWriteCSVFileSuccess() throws Exception {
@@ -124,5 +69,5 @@ public class BatchIntegrationTest {
                 "CL123400020001", "SGXFUNK20100910", BigDecimal.ONE);
         productTransactionSummaryEntities.add(prodTxnEntityMock);
         return productTransactionSummaryEntities;
-    }*/
+    }
 }
