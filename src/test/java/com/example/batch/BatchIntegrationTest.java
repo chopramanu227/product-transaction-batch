@@ -1,11 +1,9 @@
-/*
 package com.example.batch;
 
 import com.example.batch.config.BatchConfiguration;
 import com.example.batch.domain.ProductTransaction;
 import com.example.batch.job.Listener;
 import com.example.batch.job.Processor;
-import com.example.batch.job.Writer;
 import com.example.batch.persistence.entity.ProductTransactionEntity;
 import org.junit.After;
 import org.junit.Test;
@@ -51,17 +49,11 @@ public class BatchIntegrationTest {
     @Autowired
     private FlatFileItemReader<ProductTransaction> itemReader;
 
-    @Autowired
-    private ItemWriter<ProductTransactionEntity> itemWriter;
-
     @MockBean
     private Listener listener;
 
     @MockBean
     private Processor processor;
-
-    @MockBean
-    private Writer writer;
 
     @After
     public void cleanUp() {
@@ -70,9 +62,8 @@ public class BatchIntegrationTest {
 
     private JobParameters defaultJobParameters() {
         JobParametersBuilder paramsBuilder = new JobParametersBuilder();
-        */
-/*paramsBuilder.addString("file.input", TEST_INPUT);
-        paramsBuilder.addString("file.output", TEST_OUTPUT);*//*
+        /*paramsBuilder.addString("file.input", TEST_INPUT);
+        paramsBuilder.addString("file.output", TEST_OUTPUT);*/
 
         return paramsBuilder.toJobParameters();
     }
@@ -80,11 +71,8 @@ public class BatchIntegrationTest {
     @Test
     public void givenReferenceOutput_whenJobExecuted_thenSuccess() throws Exception {
         // given
-        */
-/*FileSystemResource expectedResult = new FileSystemResource(EXPECTED_OUTPUT);
-        FileSystemResource actualResult = new FileSystemResource(TEST_OUTPUT);*//*
-
-
+        /*FileSystemResource expectedResult = new FileSystemResource(EXPECTED_OUTPUT);
+        FileSystemResource actualResult = new FileSystemResource(TEST_OUTPUT);*/
         // when
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(defaultJobParameters());
         JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -114,29 +102,4 @@ public class BatchIntegrationTest {
             return null;
         });
     }
-
-    */
-/*@Test
-    public void givenMockedStep_whenWriterCalled_thenSuccess() throws Exception {
-
-        // given
-//        Book demoBook = new Book();
-//        demoBook.setAuthor("Grisham J.");
-//        demoBook.setName("The Firm");
-        StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(defaultJobParameters());
-
-        // when
-        StepScopeTestUtils.doInStepScope(stepExecution, () -> {
-
-            itemWriter.(stepExecution.getExecutionContext());
-            jsonItemWriter.write(Arrays.asList(demoBook));
-            jsonItemWriter.close();
-            return null;
-        });
-
-        // then
-        AssertFile.assertFileEquals(expectedResult, actualResult);
-    }*//*
-
 }
-*/

@@ -42,10 +42,7 @@ public class BatchConfiguration {
 
     private final Processor processor;
 
-    //private final Writer writer;
-
     private final ProductTransactionRepository productTransactionRepository;
-
 
     public BatchConfiguration(JobBuilderFactory jobBuilderFactory,StepBuilderFactory stepBuilderFactory,
                               Listener listener,Processor processor,ProductTransactionRepository productTransactionRepository) {
@@ -73,7 +70,7 @@ public class BatchConfiguration {
         writer.setMethodName("save");
 
         return stepBuilderFactory.get("step")
-                .<ProductTransaction, ProductTransactionEntity>chunk(10)
+                .<ProductTransaction, ProductTransactionEntity>chunk(100)
                 .reader(reader(fieldSetMapper))
                 .processor(processor)
                 .writer(writer)
