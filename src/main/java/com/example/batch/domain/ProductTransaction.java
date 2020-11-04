@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Domain class for mapping input file records. It will hold all the client and product related fields
+ * passed in the input file.
+ */
 @Data
 @Builder
 @AllArgsConstructor

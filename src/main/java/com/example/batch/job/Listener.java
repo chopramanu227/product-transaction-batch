@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+/**
+ *  Listener class which gets triggered after the job has been executed.
+ */
 @Component
 @Slf4j
 public class Listener extends JobExecutionListenerSupport {
@@ -31,6 +34,15 @@ public class Listener extends JobExecutionListenerSupport {
         this.productTransactionRepository = productTransactionRepository;
     }
 
+    /**
+     * Method gets triggered once the job execution is completed.
+     * <br/>
+     * Method will generate a product summary report in a Output.csv file.
+     * <br/>
+     * Report is generated based on the data recorded in the database after reading the input file.
+     *
+     * @param jobExecution
+     */
     @Override
     public void afterJob(JobExecution jobExecution) {
         log.debug("Job processing completed....");

@@ -8,10 +8,19 @@ import org.springframework.stereotype.Component;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+/**
+ * A processor class to do custom processing on the records read by batch job.
+ */
 @Component
 @Slf4j
 public class Processor implements ItemProcessor<ProductTransaction,ProductTransactionEntity> {
-
+    /**
+     * Method transform the read record into Hibernate entity which will be passed to writer
+     * for saving it in the database.
+     *
+     * @param productTransaction
+     * @return
+     */
     @Override
     public ProductTransactionEntity process(ProductTransaction productTransaction)  {
         log.debug("Processor called for product {}, client {}",

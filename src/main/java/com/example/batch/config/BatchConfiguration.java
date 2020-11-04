@@ -25,6 +25,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
+/**
+ * Configuration file to define Job executions details.
+ */
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
@@ -53,6 +56,12 @@ public class BatchConfiguration {
         this.productTransactionRepository=productTransactionRepository;
     }
 
+    /**
+     * Method defines Job parameters including steps to execute, and post processing listeners.
+     *
+     * @param step
+     * @return
+     */
     @Bean
     public Job transactionProcessingJob(Step step){
         return jobBuilderFactory.get(TRANSACTION_PROCESSING_JOB)
@@ -63,6 +72,12 @@ public class BatchConfiguration {
                 .build();
     }
 
+    /**
+     * Method defines Bean for steps of the batch job. It registers Reader, Processor and Writer required for data processing.
+     *
+     * @param fieldSetMapper
+     * @return
+     */
     @Bean
     public Step step(FieldSetMapper<ProductTransaction> fieldSetMapper){
         RepositoryItemWriter writer = new RepositoryItemWriter();
@@ -80,6 +95,13 @@ public class BatchConfiguration {
                 .build();
     }
 
+    /**
+     * Method defines Bean of reader. It uses flat file based item reader for reading
+     * input records from a flat file.
+     *
+     * @param fieldSetMapper - maps input file fields to domain objects.
+     * @return
+     */
     @Bean
     public FlatFileItemReader<ProductTransaction> reader(FieldSetMapper<ProductTransaction> fieldSetMapper) {
         DefaultLineMapper<ProductTransaction> lineMapper= new DefaultLineMapper<>();
@@ -95,6 +117,11 @@ public class BatchConfiguration {
         return reader;
     }
 
+    /**
+     * Method defines mapper configuration for mapping input records to domain object.
+     *
+     * @return
+     */
     @Bean
     public FieldSetMapper<ProductTransaction> fieldSetMapper(){
         BeanWrapperFieldSetMapper<ProductTransaction> mapper= new BeanWrapperFieldSetMapper<>();
@@ -102,6 +129,12 @@ public class BatchConfiguration {
         return mapper;
     }
 
+    /**
+     * Method defines tokenization approach to be used for reading flat files and mapping
+     * to individual fields of the mapper class.
+     *
+     * @return
+     */
     private FixedLengthTokenizer tokenizer() {
         FixedLengthTokenizer tokenizer = new FixedLengthTokenizer();
         tokenizer.setNames("recordCode",

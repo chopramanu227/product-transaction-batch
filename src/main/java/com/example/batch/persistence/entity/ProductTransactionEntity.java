@@ -9,6 +9,10 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Entity class to store the product and client information in database.
+ *
+ */
 @Entity
 @Table(name= "ProductTransaction")
 @Data
